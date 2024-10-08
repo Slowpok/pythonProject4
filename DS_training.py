@@ -7,7 +7,7 @@ import DS_init
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-def evaluate(model, dataloader, loss_fn, best_acc):
+def evaluate(model, request, dataloader, loss_fn, best_acc):
     losses = []
     new_best = best_acc
 
@@ -113,7 +113,7 @@ def training(model, loss_fn, optimizer, request, train_loader, val_loader, n_epo
         # после каждой эпохи получаем метрику качества на валидационной выборке
         model.train(False)
 
-        val_accuracy, val_loss, best_acc = evaluate(model, val_loader, loss_fn=loss_fn, best_acc=best_acc)
+        val_accuracy, val_loss, best_acc = evaluate(model, request, val_loader, loss_fn=loss_fn, best_acc=best_acc)
         acc_val.append(val_accuracy)
         loss_val.append(val_loss)
 
