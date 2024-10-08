@@ -21,6 +21,8 @@ stopwords_mass = stopwords.words("russian")
 x_mass, y_mass, num_unique_ngramm = DS_possum_tokenizer.possum_tokenizer(df)
 
 duplication_search_model = DS_dupl_search.Search_of_duplicates_test(num_unique_ngramm, "siam-twins")
+duplication_search_model.to(device)
+
 loss_fn = torch.nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(duplication_search_model.parameters(), lr=DS_init.learning_rate)
 
