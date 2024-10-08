@@ -11,7 +11,6 @@ import DS_training
 import DS_possum_tokenizer
 from collections import Counter
 
-
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # df = pd.read_excel(DS_init.finename, skiprows=1)
