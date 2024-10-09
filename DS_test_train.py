@@ -33,13 +33,13 @@ for x in range(len(df)):
 
     list_y = [1 if y == req_y else 0 for y in y_mass]
 
-    x_mass = torch.Tensor(x_mass).to(device)
+    x_tensor = torch.Tensor(x_mass).to(device)
 
     y_mass_bin = torch.as_tensor(list_y).to(device)
 
     counter = Counter(list_y)
 
-    MyDataset = Datasets.MyDataset(x_mass, y_mass_bin)
+    MyDataset = Datasets.MyDataset(x_tensor, y_mass_bin)
 
     weights = [1 / counter.get(y.item()) for x, y in MyDataset]
     sampler = WeightedRandomSampler(weights, num_samples=len(weights))
