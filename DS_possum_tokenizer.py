@@ -9,7 +9,7 @@ from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import word_tokenize
 import pickle
-
+import torch
 
 def possum_tokenizer(df):
     tokenizer = Tokenizer(num_words=DS_init.num_ngramm)
@@ -72,4 +72,65 @@ def clean_string(string_req, stoplist):
 
 
 def possum_from_seq_to_vec(seq, mass_seq):
-    pass
+    stopwords_mass = stopwords.words('russian')
+    x_mass = []
+
+    if type(mass_seq) == pandas.DataFrame:
+        is_df = True
+        iterator = mass_seq.iterrows()
+    else:
+        is_df = False
+        iterator = mass_seq
+
+    # class_row = df[request].class_row
+    for next_str in iterator:
+        if is_df:
+            index, next_str = next_str
+
+        arr_text = []
+        # new_next_str = next_str.request.translate(None, string.punctuation)
+        clean_new_next_str = next_str.request.translate(str.maketrans('', '', string.punctuation)).lower()
+        kjsbfsf = word_tokenize(clean_new_next_str)
+        str_split = clean_string(kjsbfsf, stopwords_mass)
+
+        for word in str_split:
+            arr_word = []
+            word = "[" + word + "]"
+            for i in range(len(word) - 2):
+                token_ngramm = word[i:i + 3]
+                arr_word.append(token_ngramm)
+            arr_text.append(" ".join(arr_word))
+
+        x_mass.append(arr_text)
+
+
+    # теперь то же, но со строкой
+    arr_seq = []
+    arr_text = []
+    clean_new_next_str = seq.request.translate(str.maketrans('', '', string.punctuation)).lower()
+    kjsbfsf = word_tokenize(clean_new_next_str)
+    str_split = clean_string(kjsbfsf, stopwords_mass)
+
+    for word in str_split:
+        arr_word = []
+        word = "[" + word + "]"
+        for i in range(len(word) - 2):
+            token_ngramm = word[i:i + 3]
+            arr_word.append(token_ngramm)
+        arr_text.append(" ".join(arr_word))
+    arr_seq.append(arr_text)
+
+    handle = open('tokenizer.pickle', 'rb')
+    tokenizer = pickle.load(handle)
+    x_mass = from_mass_tokens_to_vectors(x_mass, tokenizer)
+    seq_mass = from_mass_tokens_to_vectors(arr_seq, tokenizer)
+
+    request_batch = torch.Tensor(np.tile(np.array(seq_mass[0]), (len(x_mass), 1, 1)))
+    x_mass = torch.Tensor(x_mass)
+
+    handle.close()
+
+    return request_batch, x_mass
+
+
+
