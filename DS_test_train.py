@@ -48,7 +48,7 @@ for x in range(len(df)):
     val_loader_bin = data.DataLoader(MyDataset, batch_size=DS_init.batch_size, pin_memory=False, sampler=sampler)
 
     duplication_search_model = DS_training.training(duplication_search_model, loss_fn, optimizer,
-                                                    np.array(req_x), train_loader_bin, val_loader_bin, n_epoch=5)
+                                                    req_x, train_loader_bin, val_loader_bin, n_epoch=5)
 
 
 
