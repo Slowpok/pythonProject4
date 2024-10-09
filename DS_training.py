@@ -26,13 +26,11 @@ def evaluate(model, request, dataloader, loss_fn, best_acc):
         # request_batch = torch.Tensor(np.full((len(X_batch),), request)).to(device)
 
         request_mass = np.tile(request, (len(X_batch), 1, 1))
-        request_batch = torch.Tensor(request_mass)
-        request_batch.to(device)
-
+        request_batch = torch.Tensor(request_mass).to(device)
 
         with torch.no_grad():
             # forward pass
-            logits = model(request_batch, X_batch)
+            logits = model(request_batch.to(device), X_batch)
 
             loss = loss_fn(logits, y_batch)
 
@@ -79,14 +77,13 @@ def training(model, loss_fn, optimizer, request, train_loader, val_loader, n_epo
 
             request_batch = None
             request_mass = np.tile(request, (len(X_batch), 1, 1))
-            request_batch = torch.Tensor(request_mass)
-            request_batch.to(device)
+            request_batch = torch.Tensor(request_mass).to(device)
 
             # print("request_batch", request_batch.is_cpu)
             # print("X_batch", X_batch.is_cpu)
 
             # forward pass
-            logits = model(request_batch, X_batch)
+            logits = model(request_batch.to(device), X_batch)
 
             # вычисление лосса от выданных сетью ответов и правильных ответов на батч
             loss = loss_fn(logits, y_batch)

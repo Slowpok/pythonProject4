@@ -107,7 +107,7 @@ def possum_from_seq_to_vec(seq, mass_seq):
     # теперь то же, но со строкой
     arr_seq = []
     arr_text = []
-    clean_new_next_str = seq.request.translate(str.maketrans('', '', string.punctuation)).lower()
+    clean_new_next_str = seq.translate(str.maketrans('', '', string.punctuation)).lower()
     kjsbfsf = word_tokenize(clean_new_next_str)
     str_split = clean_string(kjsbfsf, stopwords_mass)
 
