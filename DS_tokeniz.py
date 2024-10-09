@@ -1,14 +1,10 @@
 from keras._tf_keras.keras.preprocessing.text import Tokenizer
 from keras._tf_keras.keras.preprocessing.sequence import pad_sequences
 import DS_init
-import torch
-import pandas as pd
 import numpy as np
 import string
 import re
-import nltk
 from nltk.corpus import stopwords
-from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import word_tokenize
 
 

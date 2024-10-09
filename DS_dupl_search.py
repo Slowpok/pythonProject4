@@ -85,7 +85,7 @@ class Search_of_duplicates_test(nn.Module):
         super(Search_of_duplicates_test, self).__init__()
         self.inplanes = 128
         self.name = name
-        emb_dim = 64
+        emb_dim = 32
 
         self.layer0 = nn.Embedding(unique_words, embedding_dim=emb_dim, max_norm=DS_init.num_of_ngramm_in_string) # -> batch*50*500*64
         # -> batch*50*32000
