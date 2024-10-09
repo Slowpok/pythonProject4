@@ -8,6 +8,7 @@ import DS_init
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 def evaluate(model, request, dataloader, loss_fn, best_acc):
+
     losses = []
     new_best = best_acc
 
@@ -15,6 +16,8 @@ def evaluate(model, request, dataloader, loss_fn, best_acc):
     num_elements = 0
 
     for i, batch in enumerate(dataloader):
+        request_batch = None
+
         # так получаем текущий батч
         X_batch, y_batch = batch
         num_elements += len(y_batch)
@@ -22,7 +25,9 @@ def evaluate(model, request, dataloader, loss_fn, best_acc):
         # torch.unsqueeze(torch.as_tensor(req_x), 0)
         # request_batch = torch.Tensor(np.full((len(X_batch),), request)).to(device)
 
-        request_batch = torch.Tensor(np.tile(request, (len(X_batch), 1, 1))).to(device)
+        request_mass = np.tile(request, (len(X_batch), 1, 1))
+        request_batch = torch.Tensor(request_mass)
+        request_batch.to(device)
 
 
         with torch.no_grad():
@@ -72,7 +77,11 @@ def training(model, loss_fn, optimizer, request, train_loader, val_loader, n_epo
             # torch.unsqueeze(torch.as_tensor(req_x), 0)
             # request_batch = torch.Tensor(np.full((len(X_batch),), request)).to(device)
 
-            request_batch = torch.Tensor(np.tile(request, (len(X_batch), 1, 1))).to(device)
+            request_batch = None
+            request_mass = np.tile(request, (len(X_batch), 1, 1))
+            request_batch = torch.Tensor(request_mass)
+            request_batch.to(device)
+
             # print("request_batch", request_batch.is_cpu)
             # print("X_batch", X_batch.is_cpu)
 
