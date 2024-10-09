@@ -27,8 +27,6 @@ loss_fn = torch.nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(duplication_search_model.parameters(), lr=DS_init.learning_rate)
 
 for x in range(len(df)):
-    if x == 1:
-        break
 
     req_x = x_mass[x]
     req_y = y_mass[x]
